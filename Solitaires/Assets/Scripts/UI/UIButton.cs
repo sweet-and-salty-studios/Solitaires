@@ -47,7 +47,6 @@ namespace SweetAndSaltyStudios
             LeanTween.scale(rectTransform, highlightedScale, 0.1f);
         }
 
-
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);

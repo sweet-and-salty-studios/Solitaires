@@ -14,7 +14,6 @@ namespace SweetAndSaltyStudios
         public AudioClip Invalid_Card_Placement_Sound;
         public AudioClip GameStart_Sound;
         public AudioClip Shuffle_Sound;
-        public AudioClip Undo_Sound;
 
         private AudioSource audioSource;
 
@@ -54,7 +53,7 @@ namespace SweetAndSaltyStudios
             Tableau_Pile.OnCardsValidPlacement_Event += PlayValidPlacement;
 
             CardHolder_Pile.OnCardReset_Event += PlayCardReset;
-            Card.OnFlip_Event += PlayCardFlip;
+            CardDisplay.OnFlip_Event += PlayCardFlip;
         }
 
         private void UnregisterSoundEvents()
@@ -69,7 +68,7 @@ namespace SweetAndSaltyStudios
             Tableau_Pile.OnCardsValidPlacement_Event -= PlayValidPlacement;
 
             CardHolder_Pile.OnCardReset_Event -= PlayCardReset;
-            Card.OnFlip_Event -= PlayCardFlip;
+            CardDisplay.OnFlip_Event -= PlayCardFlip;
         }
 
         private void PlayCardReset()
@@ -77,22 +76,22 @@ namespace SweetAndSaltyStudios
             PlaySoundEffect(Invalid_Card_Placement_Sound);
         }
 
-        private void PlayInvalidPlacement(Card[] someCards)
+        private void PlayInvalidPlacement(CardDisplay[] someCards)
         {
             PlaySoundEffect(Invalid_Card_Placement_Sound);
         }
 
-        private void PlayValidPlacement(Card[] someCards, UndoAction someUndoAction)
+        private void PlayValidPlacement(CardDisplay[] someCards, UndoAction someUndoAction)
         {
             PlaySoundEffect(Place_Card_Sound);
         }
 
-        private void PlayCardFlip(Card someCard, UndoAction someUndoAction)
+        private void PlayCardFlip(CardDisplay someCard, UndoAction someUndoAction)
         {
             PlaySoundEffect(Turn_Card_Sound);
         }
 
-        private void PlayQuickPlacement(Card someCard, UndoAction someUndoAction)
+        private void PlayQuickPlacement(CardDisplay someCard, UndoAction someUndoAction)
         {
             PlaySoundEffect(Place_Card_Sound);
         }

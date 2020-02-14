@@ -8,7 +8,6 @@ namespace SweetAndSaltyStudios
         #region VARIABLES
 
         private UIPanel currentPanel;
-
         private Coroutine iOpenPanel_Coroutine;
         private Coroutine iChangePanel_Coroutine;
 

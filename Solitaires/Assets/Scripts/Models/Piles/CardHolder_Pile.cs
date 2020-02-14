@@ -40,9 +40,9 @@ namespace SweetAndSaltyStudios
 
         protected override void RegisterEvents()
         {
-            Card.OnBeginDrag_Event += StartDrag;
-            Card.OnDrag_Event += Drag;
-            Card.OnEndDrag_Event += EndDrag;
+            CardDisplay.OnBeginDrag_Event += StartDrag;
+            CardDisplay.OnDrag_Event += Drag;
+            CardDisplay.OnEndDrag_Event += EndDrag;
 
             Foundation_Pile.OnCardsDrop_Event += GetAllCards;
             Foundation_Pile.OnCardsInvalidPlacement_Event += ResetCardsToPreviousPile;
@@ -54,9 +54,9 @@ namespace SweetAndSaltyStudios
 
         protected override void UnregisterEvents()
         {
-            Card.OnBeginDrag_Event -= StartDrag;
-            Card.OnDrag_Event -= Drag;
-            Card.OnEndDrag_Event -= EndDrag;
+            CardDisplay.OnBeginDrag_Event -= StartDrag;
+            CardDisplay.OnDrag_Event -= Drag;
+            CardDisplay.OnEndDrag_Event -= EndDrag;
 
             Foundation_Pile.OnCardsDrop_Event -= GetAllCards;
             Foundation_Pile.OnCardsInvalidPlacement_Event -= ResetCardsToPreviousPile;
@@ -66,7 +66,7 @@ namespace SweetAndSaltyStudios
             base.UnregisterEvents();
         }
 
-        private void ResetCardsToPreviousPile(Card[] cards)
+        private void ResetCardsToPreviousPile(CardDisplay[] cards)
         {
             if(cards == null || cards.Length == 0)
             {
@@ -81,7 +81,7 @@ namespace SweetAndSaltyStudios
             OnCardReset_Event();
         }
 
-        public void StartDrag(Card card)
+        public void StartDrag(CardDisplay card)
         {
             var result = card.CurrentPile.GetValidCards(card);
 
@@ -114,7 +114,7 @@ namespace SweetAndSaltyStudios
             RectTransform.anchoredPosition += position;
         }
 
-        public void EndDrag(Card card)
+        public void EndDrag(CardDisplay card)
         {
             canvasGroup.blocksRaycasts = true;
             canvasGroup.interactable = true;

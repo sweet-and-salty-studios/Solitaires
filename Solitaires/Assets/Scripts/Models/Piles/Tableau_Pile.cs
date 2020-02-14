@@ -7,9 +7,9 @@ namespace SweetAndSaltyStudios
     {
         #region VARIABLES
 
-        public static event Func<Card[]> OnCardsDrop_Event = delegate { return null; };
-        public static event Action<Card[], UndoAction> OnCardsValidPlacement_Event = delegate { };
-        public static event Action<Card[]> OnCardsInvalidPlacement_Event = delegate { };
+        public static event Func<CardDisplay[]> OnCardsDrop_Event = delegate { return null; };
+        public static event Action<CardDisplay[], UndoAction> OnCardsValidPlacement_Event = delegate { };
+        public static event Action<CardDisplay[]> OnCardsInvalidPlacement_Event = delegate { };
 
         private const int EMPTY_PILE_START_VALUE = 13;
 
@@ -33,21 +33,21 @@ namespace SweetAndSaltyStudios
 
         protected override void RegisterEvents()
         {
-            Card.OnBeginDrag_Event += VisualValidPlacement;
-            Card.OnEndDrag_Event += ResetVisuals;
+            CardDisplay.OnBeginDrag_Event += VisualValidPlacement;
+            CardDisplay.OnEndDrag_Event += ResetVisuals;
 
             base.RegisterEvents();
         }
 
         protected override void UnregisterEvents()
         {
-            Card.OnBeginDrag_Event -= VisualValidPlacement;
-            Card.OnEndDrag_Event -= ResetVisuals;
+            CardDisplay.OnBeginDrag_Event -= VisualValidPlacement;
+            CardDisplay.OnEndDrag_Event -= ResetVisuals;
 
             base.UnregisterEvents();
         }
 
-        private void ResetVisuals(Card card)
+        private void ResetVisuals(CardDisplay card)
         {
             if(highlightResponse == null)
             {
@@ -57,9 +57,9 @@ namespace SweetAndSaltyStudios
             highlightResponse.HoverOutAnimation();
         }
 
-        private void VisualValidPlacement(Card card)
+        private void VisualValidPlacement(CardDisplay card)
         {
-            if(IsValidDrop(new Card[] { card }))
+            if(IsValidDrop(new CardDisplay[] { card }))
             {
                 if(highlightResponse == null)
                 {
@@ -73,7 +73,7 @@ namespace SweetAndSaltyStudios
             return;
         }
 
-        protected bool IsValidDrop(Card[] cards)
+        protected bool IsValidDrop(CardDisplay[] cards)
         {
             if(cards == null)
             {
@@ -122,7 +122,7 @@ namespace SweetAndSaltyStudios
             return true;
         }
 
-        private void ValidateDrop(Card[] cards)
+        private void ValidateDrop(CardDisplay[] cards)
         {
             var canDrop = IsValidDrop(cards);
 
@@ -132,7 +132,7 @@ namespace SweetAndSaltyStudios
 
                 topCard.PreviousPile.HandleTopCard(true);
 
-                Card card;
+                CardDisplay card;
                 Pile pileToReturn;
 
                 pileToReturn = topCard.PreviousPile;

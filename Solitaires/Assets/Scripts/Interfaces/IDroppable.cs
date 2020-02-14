@@ -4,6 +4,6 @@ namespace SweetAndSaltyStudios
 {
     public interface IDroppable : IDropHandler
     {
-        bool IsValidDrop(Card[] cards);
+        bool IsValidDrop(CardDisplay[] cards);
     }
 }

@@ -11,10 +11,10 @@ namespace SweetAndSaltyStudios
 
         public static event Func<Foundation_Pile, bool, bool> OnFull_Event = delegate { return false; };
 
-        public static event Func<Card[]> OnCardsDrop_Event = delegate { return null; };
-        public static event Action<Card[]> OnCardsInvalidPlacement_Event = delegate { };
-        public static event Action<Card[], UndoAction> OnCardValidPlacement_Event = delegate { };
-        public static event Action<Card, UndoAction> OnQuickPlacement = delegate { };
+        public static event Func<CardDisplay[]> OnCardsDrop_Event = delegate { return null; };
+        public static event Action<CardDisplay[]> OnCardsInvalidPlacement_Event = delegate { };
+        public static event Action<CardDisplay[], UndoAction> OnCardValidPlacement_Event = delegate { };
+        public static event Action<CardDisplay, UndoAction> OnQuickPlacement = delegate { };
 
         private const int EMPTY_PILE_START_VALUE = 1;
         private const int MAX_CARD_LIMIT = 13;
@@ -42,11 +42,20 @@ namespace SweetAndSaltyStudios
 
         protected override void RegisterEvents()
         {
-            Card.OnBeginDrag_Event += VisualValidPlacement;
-            Card.OnEndDrag_Event += ResetVisuals;
-            Card.OnDoubleClick_Event += QuickPlacement;
+            CardDisplay.OnBeginDrag_Event += VisualValidPlacement;
+            CardDisplay.OnEndDrag_Event += ResetVisuals;
+            CardDisplay.OnDoubleClick_Event += QuickPlacement;
 
             base.RegisterEvents();
+        }
+
+        protected override void UnregisterEvents()
+        {
+            CardDisplay.OnBeginDrag_Event -= VisualValidPlacement;
+            CardDisplay.OnEndDrag_Event -= ResetVisuals;
+            CardDisplay.OnDoubleClick_Event -= QuickPlacement;
+
+            base.UnregisterEvents();
         }
 
         private bool IsFull()
@@ -54,14 +63,14 @@ namespace SweetAndSaltyStudios
             return CardCount >= 13;
         }
 
-        private void QuickPlacement(Card card,UndoAction someType)
+        private void QuickPlacement(CardDisplay card,UndoAction someType)
         {
             if(card.CurrentPile.IsCardLastIndex(card) == false)
             {
                 return;
             }
 
-            var cardToDrop = new Card[] { card };
+            var cardToDrop = new CardDisplay[] { card };
 
             if(IsValidDrop(cardToDrop))
             {
@@ -87,7 +96,7 @@ namespace SweetAndSaltyStudios
 
         #region CUSTOM_FUNCTIONS
 
-        private void ResetVisuals(Card card)
+        private void ResetVisuals(CardDisplay card)
         {
             if(highlightResponse == null)
             {
@@ -97,14 +106,14 @@ namespace SweetAndSaltyStudios
             highlightResponse.HoverOutAnimation();
         }
 
-        private void VisualValidPlacement(Card card)
+        private void VisualValidPlacement(CardDisplay card)
         {
             if(card.CurrentPile.IsCardLastIndex(card) == false)
             {
                 return;
             }
 
-            var cardToDrop = new Card[] { card };
+            var cardToDrop = new CardDisplay[] { card };
 
             if(IsValidDrop(cardToDrop))
             {
@@ -118,7 +127,7 @@ namespace SweetAndSaltyStudios
             }
         }
 
-        public bool IsValidDrop(Card[] cards)
+        public bool IsValidDrop(CardDisplay[] cards)
         {
             if(cards == null)
             {
@@ -167,7 +176,7 @@ namespace SweetAndSaltyStudios
             return true;
         }
 
-        private void ValidateDrop(Card[] cards)
+        private void ValidateDrop(CardDisplay[] cards)
         {
             if(IsValidDrop(cards))
             {
@@ -177,18 +186,14 @@ namespace SweetAndSaltyStudios
 
                 var pileToReturn = topCard.PreviousPile;
 
-                var undoAction = new UndoAction(() =>
+                OnCardValidPlacement_Event(cards, new UndoAction(() =>
                 {
-                    //Debug.Log("MOVE");
-
                     topCard.CurrentPile.GetCard(topCard);
 
                     pileToReturn.PlaceCard(topCard);
 
                     topCard.CurrentPile.HandlePreviousCard(false);
-                });
-
-                OnCardValidPlacement_Event(cards, undoAction);
+                }));
 
                 PlaceCards(cards);
 

@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace SweetAndSaltyStudios
 {
-    public class Stock_Pile : Pile, IInteractable
+    public class Stock_Pile : 
+    Pile,
+    IClickable
     {
         #region VARIABLES
 
@@ -19,7 +19,7 @@ namespace SweetAndSaltyStudios
         [Range(0, 10)] public float CardMovementDuration;
         [Range(0, 10)] public float CardFlipDuration;
 
-        public static event Action<Card, UndoAction> OnCardDrawed_Event = delegate { };
+        public static event Action<CardDisplay, UndoAction> OnCardDrawed_Event = delegate { };
 
         private Coroutine iDeal_Coroutine;
         private Coroutine iDrawCard_Coroutine;
@@ -37,11 +37,6 @@ namespace SweetAndSaltyStudios
         #endregion PROPERTIES
 
         #region UNITY_FUNCTIONS
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            DrawCard();
-        }
 
         #endregion UNITY_FUNCTIONS
 
@@ -61,7 +56,7 @@ namespace SweetAndSaltyStudios
             base.UnregisterEvents();
         }
 
-        private void DealCards(Card[] createdCards)
+        private void DealCards(CardDisplay[] createdCards)
         {
             if(iDeal_Coroutine != null)
             {
@@ -117,7 +112,7 @@ namespace SweetAndSaltyStudios
             }
         }
 
-        private IEnumerator IDealCards(Card[] cards)
+        private IEnumerator IDealCards(CardDisplay[] cards)
         {
             Shuffle(cards);
 
@@ -182,7 +177,7 @@ namespace SweetAndSaltyStudios
                 yield return new WaitUntil(() => isAnimatingScale == false && isAnimatingMovement == false);
             }
 
-            Card card = null;
+            CardDisplay card = null;
             var pileToReturn = cards[0].CurrentPile;
 
             for(int i = 0; i < cards.Length; i++)
@@ -253,12 +248,7 @@ namespace SweetAndSaltyStudios
             iDrawCard_Coroutine = null;
         }
 
-        public void ToggleAnimation(Toggle toggle)
-        {
-            IsAnimating = toggle.isOn;
-        }
-
-        public void OnPointerDown(PointerEventData eventData)
+        public void OnPointerDown()
         {
             if(highlightResponse == null)
             {
@@ -268,7 +258,12 @@ namespace SweetAndSaltyStudios
             highlightResponse.HoverInAnimation();
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        public void OnPointerClick()
+        {
+            DrawCard();
+        }
+
+        public void OnPointerUp()
         {
             if(highlightResponse == null)
             {
@@ -276,6 +271,10 @@ namespace SweetAndSaltyStudios
             }
 
             highlightResponse.HoverInAnimation();
+        }
+
+        public void OnDoubleClick()
+        {
         }
 
         #endregion CUSTOM_FUNCTIONS

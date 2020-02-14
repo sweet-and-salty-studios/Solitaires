@@ -12,7 +12,7 @@ namespace SweetAndSaltyStudios
 
         public static Action OnCardPlaced_Event = delegate { };
 
-        protected List<Card> cardsInContainer = new List<Card>();
+        protected List<CardDisplay> cardsInContainer = new List<CardDisplay>();
         protected Transform content;
         protected Image backgroundImage;
         protected IHighlightResponse highlightResponse;
@@ -130,9 +130,9 @@ namespace SweetAndSaltyStudios
             previousCard.SetInteractability(interactability);
         }
 
-        public Card[] GetAllCards()
+        public CardDisplay[] GetAllCards()
         {
-            var result = new Card[cardsInContainer.Count ];
+            var result = new CardDisplay[cardsInContainer.Count ];
 
             for(int i = 0; i < result.Length; i++)
             {
@@ -142,11 +142,11 @@ namespace SweetAndSaltyStudios
             return result;
         }
 
-        public Card[] GetValidCards(Card startCard)
+        public CardDisplay[] GetValidCards(CardDisplay startCard)
         {
             var hitIndex = 0;
 
-            var list = new List<Card>();
+            var list = new List<CardDisplay>();
 
             for(; hitIndex < cardsInContainer.Count; hitIndex++)
             {
@@ -164,7 +164,7 @@ namespace SweetAndSaltyStudios
                 list.Add(cardsInContainer[hitIndex]);
             }
 
-            var result = new Card[list.Count];
+            var result = new CardDisplay[list.Count];
 
             for(int i = 0; i < list.Count; i++)
             {
@@ -174,7 +174,7 @@ namespace SweetAndSaltyStudios
             return result;
         }
 
-        public Card GetTopCard()
+        public CardDisplay GetTopCard()
         {
             if(cardsInContainer == null || cardsInContainer.Count == 0)
             {
@@ -185,7 +185,7 @@ namespace SweetAndSaltyStudios
             return GetCard(cardsInContainer[CardCount - 1]);
         }
 
-        public Card GetCard(Card card)
+        public CardDisplay GetCard(CardDisplay card)
         {
             if(cardsInContainer == null || card == null)
             {
@@ -210,7 +210,7 @@ namespace SweetAndSaltyStudios
             return null;
         }
 
-        public void PlaceCards(Card[] cards)
+        public void PlaceCards(CardDisplay[] cards)
         {
             if(cards == null)
             {
@@ -230,7 +230,7 @@ namespace SweetAndSaltyStudios
             }
         }
 
-        public void PlaceCard(Card card)
+        public void PlaceCard(CardDisplay card)
         {
             if(cardsInContainer == null || card == null)
             {
@@ -253,7 +253,7 @@ namespace SweetAndSaltyStudios
             OnCardPlaced_Event();
         }
 
-        public bool IsCardLastIndex(Card card)
+        public bool IsCardLastIndex(CardDisplay card)
         {
             return cardsInContainer[cardsInContainer.Count - 1] == card;
         }

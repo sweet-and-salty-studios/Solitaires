@@ -12,19 +12,21 @@ namespace SweetAndSaltyStudios
         public static event Action<int> OnCheckMovesCurrentState_Event = delegate { };
         public static event Action<bool> OnCheckIfGameOver = delegate { };
         public static event Action OnGameOver = delegate { };
-        public static event Action<Card[]> OnCardsCreated = delegate { };
+        public static event Action<CardDisplay[]> OnCardsCreated = delegate { };
       
         private Stack<UndoAction> undoActions = new Stack<UndoAction>();
 
-        private List<Foundation_Pile> fullFoundationPiles = new List<Foundation_Pile>();
-
         private int moveCount;
 
-        private CardData[] cardData;
-        private Card cardPrefab;
+#pragma warning disable 0649
 
-        private Card[] createdCards;
-        private Sprite[] cardBackSprites;
+        [SerializeField] private CardDisplay cardPrefab;
+        [SerializeField] private CardData[] cardData;
+        [SerializeField] private Sprite[] cardBackSprites;
+
+#pragma warning restore 0649
+
+        private CardDisplay[] createdCards;
 
         private Transform gameArea;
 
@@ -60,46 +62,32 @@ namespace SweetAndSaltyStudios
         private void Initialize()
         {
             gameArea = GetComponentInChildren<Canvas>().transform.Find("GameArea");       
-
-            cardData = Resources.LoadAll<CardData>("CardData/");
-            cardBackSprites = Resources.LoadAll<Sprite>("Sprites/");
-            cardPrefab = Resources.Load<Card>("Prefabs/CardPrefab");
         }
 
         private void RegisterEvents()
         {
-            Foundation_Pile.OnFull_Event += CheckIfGameOver;
-
             Foundation_Pile.OnQuickPlacement += AddUndoAction;
             Foundation_Pile.OnCardValidPlacement_Event += AddUndoAction;
             Tableau_Pile.OnCardsValidPlacement_Event += AddUndoAction;
-            Card.OnFlip_Event += AddUndoAction;
+            CardDisplay.OnFlip_Event += AddUndoAction;
             Stock_Pile.OnCardDrawed_Event += AddUndoAction;
         }
 
         private void UnregisterEvents()
         {
-            Foundation_Pile.OnFull_Event -= CheckIfGameOver;
-
             Foundation_Pile.OnQuickPlacement -= AddUndoAction;
             Foundation_Pile.OnCardValidPlacement_Event -= AddUndoAction;
             Tableau_Pile.OnCardsValidPlacement_Event -= AddUndoAction;
-            Card.OnFlip_Event -= AddUndoAction;
+            CardDisplay.OnFlip_Event -= AddUndoAction;
             Stock_Pile.OnCardDrawed_Event -= AddUndoAction;
         }
 
-        private void AddUndoAction(Card[] cards, UndoAction undoAction)
+        private void AddUndoAction(CardDisplay[] cards, UndoAction undoAction)
         {
-            // We nee only create one undo action for multiple cards....?
-            //for(int i = 0; i < cards.Length; i++)
-            //{
-            //    AddUndoAction(cards[i], undoAction);
-            //}
-
             AddUndoAction(cards[0], undoAction);
         }
 
-        private void AddUndoAction(Card card, UndoAction undoAction)
+        private void AddUndoAction(CardDisplay card, UndoAction undoAction)
         {
             undoActions.Push(undoAction);
 
@@ -118,9 +106,9 @@ namespace SweetAndSaltyStudios
             return sprites[UnityEngine.Random.Range(0, sprites.Length - 1)];
         }
 
-        private Card[] CreateCards(CardData[] cardData, bool isTurned = false)
+        private CardDisplay[] CreateCards(CardData[] cardData, bool isTurned = false)
         {
-            var result = new Card[cardData.Length];
+            var result = new CardDisplay[cardData.Length];
 
             var cardBackSprite = GetRandomSprite(cardBackSprites);
 
@@ -182,33 +170,6 @@ namespace SweetAndSaltyStudios
             moveCount--;
 
             OnCheckMovesCurrentState_Event(moveCount);
-        }
-
-        private bool CheckIfGameOver(Foundation_Pile foundation_Pile, bool isFull)
-        {
-            // REFACTOR
-
-            if(isFull)
-            {
-                fullFoundationPiles.Add(foundation_Pile);
-                Debug.LogError(foundation_Pile.name + " ADDED");
-            }
-            else
-            {
-                if(fullFoundationPiles.Remove(foundation_Pile))
-                {
-                    Debug.LogError(foundation_Pile.name + " Removed");
-                }
-            }
-
-            if(fullFoundationPiles.Count >= 4)
-            {
-                Debug.LogError("YOU ARE WINNER!");
-                OnGameOver();
-                return true;
-            }
-
-            return false;
         }
 
         #endregion CUSTOM_FUNCTIONS
