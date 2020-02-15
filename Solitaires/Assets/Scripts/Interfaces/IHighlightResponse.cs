@@ -6,7 +6,7 @@ namespace SweetAndSaltyStudios
     {
         RectTransform RectTransform { get; }
 
-        void HoverInAnimation();
-        void HoverOutAnimation();
+        void OnHoverIn();
+        void OnHoverOut();
     }
 }

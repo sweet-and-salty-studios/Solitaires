@@ -77,8 +77,6 @@ namespace SweetAndSaltyStudios
             for(int i = cards.Length - 1; i >= 0; i--)
             {
                 cards[i].PreviousPile.PlaceCard(cards[i]);
-                print("Current pile: " + cards[i].CurrentPile.name);
-                print("Previous pile: " + cards[i].PreviousPile.name);
             }
 
             OnCardReset_Event();

@@ -27,6 +27,7 @@ namespace SweetAndSaltyStudios
 #pragma warning restore 0649
 
         private CardDisplay[] createdCards;
+        private Foundation_Pile[] foundation_Piles;
 
         private Transform gameArea;
 
@@ -61,7 +62,8 @@ namespace SweetAndSaltyStudios
 
         private void Initialize()
         {
-            gameArea = GetComponentInChildren<Canvas>().transform.Find("GameArea");       
+            gameArea = GetComponentInChildren<Canvas>().transform.Find("GameArea");
+            foundation_Piles = GetComponentsInChildren<Foundation_Pile>();
         }
 
         private void RegisterEvents()
@@ -71,6 +73,16 @@ namespace SweetAndSaltyStudios
             Tableau_Pile.OnCardsValidPlacement_Event += AddUndoAction;
             CardDisplay.OnFlip_Event += AddUndoAction;
             Stock_Pile.OnCardDrawed_Event += AddUndoAction;
+        }
+
+        private void CheckIfFoundationsAreFull()
+        {
+            var result = false;
+
+            for(int i = 0; i < foundation_Piles.Length; i++)
+            {
+                result = foundation_Piles[i].IsFull;
+            }
         }
 
         private void UnregisterEvents()

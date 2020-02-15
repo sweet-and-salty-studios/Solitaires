@@ -48,12 +48,12 @@ namespace SweetAndSaltyStudios
 
         #region CUSTOM_FUNCTIONS
 
-        public void HoverInAnimation()
+        public void OnHoverIn()
         {
             LeanTween.scale(RectTransform, highlightedSize, animationSpeed);
         }
 
-        public void HoverOutAnimation()
+        public void OnHoverOut()
         {
             LeanTween.scale(RectTransform, defaultSize, animationSpeed);
         }

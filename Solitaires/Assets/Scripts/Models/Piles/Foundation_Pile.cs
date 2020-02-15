@@ -9,8 +9,6 @@ namespace SweetAndSaltyStudios
     {
         #region VARIABLES
 
-        public static event Func<Foundation_Pile, bool, bool> OnFull_Event = delegate { return false; };
-
         public static event Func<CardDisplay[]> OnCardsDrop_Event = delegate { return null; };
         public static event Action<CardDisplay[]> OnCardsInvalidPlacement_Event = delegate { };
         public static event Action<CardDisplay[], UndoAction> OnCardValidPlacement_Event = delegate { };
@@ -28,6 +26,14 @@ namespace SweetAndSaltyStudios
         #endregion VARIABLES
 
         #region PROPERTIES
+
+        public bool IsFull
+        {
+            get
+            {
+                return CardCount >= MAX_CARD_LIMIT;
+            }
+        }
 
         #endregion PROPERTIES
 
@@ -58,11 +64,6 @@ namespace SweetAndSaltyStudios
             base.UnregisterEvents();
         }
 
-        private bool IsFull()
-        {
-            return CardCount >= 13;
-        }
-
         private void QuickPlacement(CardDisplay card,UndoAction someType)
         {
             if(card.CurrentPile.IsCardLastIndex(card) == false)
@@ -81,8 +82,6 @@ namespace SweetAndSaltyStudios
                 topCard.PreviousPile.HandleTopCard(true);
 
                 OnQuickPlacement(card, someType);
-
-                OnFull_Event(this, IsFull());
             }
         }
 
@@ -103,7 +102,7 @@ namespace SweetAndSaltyStudios
                 return;
             }
 
-            highlightResponse.HoverOutAnimation();
+            highlightResponse.OnHoverOut();
         }
 
         private void VisualValidPlacement(CardDisplay card)
@@ -122,7 +121,7 @@ namespace SweetAndSaltyStudios
                     return;
                 }
 
-                highlightResponse.HoverInAnimation();
+                highlightResponse.OnHoverIn();
                 return;
             }
         }
@@ -151,6 +150,8 @@ namespace SweetAndSaltyStudios
                 return false;
             }
 
+            // We can only quick placement once... :(
+
             if(cardsInContainer.Count == 0 
             && 
             firstDroppedCard.Data.Value == EMPTY_PILE_START_VALUE
@@ -166,7 +167,6 @@ namespace SweetAndSaltyStudios
             }
 
             var topCard = cardsInContainer[cardsInContainer.Count - 1];
-
 
             if(topCard.Data.Value != firstDroppedCard.Data.Value - 1)
             {
@@ -196,8 +196,6 @@ namespace SweetAndSaltyStudios
                 }));
 
                 PlaceCards(cards);
-
-                OnFull_Event(this, IsFull());
 
                 return;
             }

@@ -250,7 +250,7 @@ namespace SweetAndSaltyStudios
         {
             if(highlightResponse == null) { return; }
 
-            highlightResponse.HoverInAnimation();
+            highlightResponse.OnHoverIn();
         }
 
         public void OnPointerClick()
@@ -262,7 +262,7 @@ namespace SweetAndSaltyStudios
         {
             if(highlightResponse == null) { return; }
 
-            highlightResponse.HoverInAnimation();
+            highlightResponse.OnHoverIn();
         }
 
         public void OnDoubleClick()

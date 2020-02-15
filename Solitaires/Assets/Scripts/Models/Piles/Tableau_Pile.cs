@@ -55,7 +55,7 @@ namespace SweetAndSaltyStudios
                 return;
             }
 
-            highlightResponse.HoverOutAnimation();
+            highlightResponse.OnHoverOut();
         }
 
         private void VisualValidPlacement(CardDisplay card)
@@ -67,7 +67,7 @@ namespace SweetAndSaltyStudios
                     return;
                 }
 
-                highlightResponse.HoverInAnimation();
+                highlightResponse.OnHoverIn();
                 return;
             }
 

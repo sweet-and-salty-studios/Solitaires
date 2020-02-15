@@ -52,12 +52,12 @@ namespace SweetAndSaltyStudios
 
         #region CUSTOM_FUNCTIONS
 
-        public void HoverInAnimation()
+        public void OnHoverIn()
         {
             StartValidPlacementAniamtion();
         }
 
-        public void HoverOutAnimation()
+        public void OnHoverOut()
         {
             EndValidPlacementAnimation();
         }
