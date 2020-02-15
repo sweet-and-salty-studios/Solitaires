@@ -75,7 +75,7 @@ namespace SweetAndSaltyStudios
 
             if(CardCount == 0 && waste.CardCount == 0)
             {
-                Debug.LogError("STOCK AND WASTE IS EMPTY");
+                Debug.LogError("STOCK AND WASTE ARE EMPTY");
                 return;
             }
 
@@ -189,12 +189,10 @@ namespace SweetAndSaltyStudios
 
             var undoAction = new UndoAction(() =>
             {
-                //Debug.Log("MOVE AND FLIP REVERSE");
-
-                for(int i = 0; i < cards.Length; i++)
+                for(int i = cards.Length - 1; i >= 0; i--)
                 {
+                //for(int i = 0; i < cards.Length; i++)
                     card = cards[i].CurrentPile.GetCard(cards[i]);
-
                     pileToReturn.PlaceCard(card);
 
                     card.Flip(true, true);
@@ -250,10 +248,7 @@ namespace SweetAndSaltyStudios
 
         public void OnPointerDown()
         {
-            if(highlightResponse == null)
-            {
-                return;
-            }
+            if(highlightResponse == null) { return; }
 
             highlightResponse.HoverInAnimation();
         }
@@ -265,16 +260,14 @@ namespace SweetAndSaltyStudios
 
         public void OnPointerUp()
         {
-            if(highlightResponse == null)
-            {
-                return;
-            }
+            if(highlightResponse == null) { return; }
 
             highlightResponse.HoverInAnimation();
         }
 
         public void OnDoubleClick()
         {
+
         }
 
         #endregion CUSTOM_FUNCTIONS

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace SweetAndSaltyStudios
@@ -92,7 +93,9 @@ namespace SweetAndSaltyStudios
                 return false;
             }
 
-            if(cardsInContainer.Count == 0 && firstCard.Data.Value == EMPTY_PILE_START_VALUE)
+            if(cardsInContainer.Count == 0 
+            &&
+            firstCard.Data.Value == EMPTY_PILE_START_VALUE)
             {
                 return true;
             }
@@ -103,6 +106,11 @@ namespace SweetAndSaltyStudios
             }
 
             var topCard = cardsInContainer[cardsInContainer.Count - 1];
+
+            if(firstCard.PreviousPile == this)
+            {
+                return false;
+            }
 
             if(topCard.IsTurned == false)
             {
@@ -128,7 +136,7 @@ namespace SweetAndSaltyStudios
 
             if(canDrop)
             {
-                var topCard = cards[0];
+                var topCard = cards[0];          
 
                 topCard.PreviousPile.HandleTopCard(true);
 
@@ -141,8 +149,6 @@ namespace SweetAndSaltyStudios
                 {
                     for(int i = cards.Length - 1; i >= 0; i--)
                     {
-                        //Debug.Log("MOVE");
-
                         card = cards[i];
 
                         card.CurrentPile.GetCard(card);

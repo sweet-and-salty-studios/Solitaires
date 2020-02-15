@@ -62,40 +62,28 @@ namespace SweetAndSaltyStudios
 
         public void OpenPanel(UIPanel panel, float delay = 0)
         {
-            if(iOpenPanel_Coroutine != null)
-            {
-                return;
-            }
+            if(iOpenPanel_Coroutine != null) { return; }
 
             iOpenPanel_Coroutine = StartCoroutine(IOpenPanel(panel, delay));
         }
 
         public void ChangePanel(UIPanel panel)
         {
-            if(iChangePanel_Coroutine != null)
-            {
-                return;
-            }
+            if(iChangePanel_Coroutine != null) { return; }
 
             iChangePanel_Coroutine = StartCoroutine(IChangePanel(panel));
         }
 
         public void ChangePanelWithDelay(UIPanel panel, float delay)
         {
-            if(iChangePanel_Coroutine != null)
-            {
-                return;
-            }
+            if(iChangePanel_Coroutine != null) { return; }
 
             iChangePanel_Coroutine = StartCoroutine(IChangePanel(panel, delay));
         }
 
         private IEnumerator IOpenPanel(UIPanel panel, float delay = 0)
         {
-            if(delay != 0)
-            {
-                yield return new WaitForSeconds(delay);
-            }
+            if(delay != 0) { yield return new WaitForSeconds(delay); }
 
             if(panel != null)
             {
@@ -109,10 +97,7 @@ namespace SweetAndSaltyStudios
 
         private IEnumerator IChangePanel(UIPanel panel, float delay = 0)
         {
-            if(delay > 0)
-            {
-                yield return new WaitForSeconds(delay);
-            }
+            if(delay > 0) { yield return new WaitForSeconds(delay); }
 
             if(currentPanel != null)
             {

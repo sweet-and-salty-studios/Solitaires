@@ -134,18 +134,13 @@ namespace SweetAndSaltyStudios
                 return false;
             }
 
-            if(cards.Length == 0)
+            if(cards.Length != 1)
             {
                 return false;
             }
 
             var firstDroppedCard = cards[cards.Length - 1];
        
-            if(cards.Length > 1)
-            {
-                return false;
-            }
-
             if(cardsInContainer == null)
             {
                 return false;
@@ -156,7 +151,11 @@ namespace SweetAndSaltyStudios
                 return false;
             }
 
-            if(cardsInContainer.Count == 0 && firstDroppedCard.Data.Value == EMPTY_PILE_START_VALUE)
+            if(cardsInContainer.Count == 0 
+            && 
+            firstDroppedCard.Data.Value == EMPTY_PILE_START_VALUE
+            &&
+            firstDroppedCard.PreviousPile != this)
             {
                 return true;
             }
@@ -167,6 +166,7 @@ namespace SweetAndSaltyStudios
             }
 
             var topCard = cardsInContainer[cardsInContainer.Count - 1];
+
 
             if(topCard.Data.Value != firstDroppedCard.Data.Value - 1)
             {

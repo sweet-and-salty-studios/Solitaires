@@ -60,6 +60,7 @@ namespace SweetAndSaltyStudios
 
             Foundation_Pile.OnCardsDrop_Event -= GetAllCards;
             Foundation_Pile.OnCardsInvalidPlacement_Event -= ResetCardsToPreviousPile;
+
             Tableau_Pile.OnCardsDrop_Event -= GetAllCards;
             Tableau_Pile.OnCardsInvalidPlacement_Event -= ResetCardsToPreviousPile;
 
@@ -76,6 +77,8 @@ namespace SweetAndSaltyStudios
             for(int i = cards.Length - 1; i >= 0; i--)
             {
                 cards[i].PreviousPile.PlaceCard(cards[i]);
+                print("Current pile: " + cards[i].CurrentPile.name);
+                print("Previous pile: " + cards[i].PreviousPile.name);
             }
 
             OnCardReset_Event();
